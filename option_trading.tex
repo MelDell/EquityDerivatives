@@ -1,0 +1,181 @@
+
+
+\documentclass[12pt]{article}
+
+
+\usepackage{amsmath}
+\usepackage{nccmath}
+\usepackage{mathtools }
+\usepackage{amsthm}
+\usepackage{hyperref}
+\usepackage{xcolor}
+
+\everymath{\displaystyle}
+
+\newcommand{\der}[2]{\frac{\mathrm{d}{#1}}{\mathrm{d}{#2}}}
+
+
+\begin{document}
+\section{Black and Scholes Call Option Pricing}
+We assume rates are zero and dividends are zero. We also assume that the stock price follows a geometric Brownian motion. The price of the call option at time $t$ is given by the Black and Scholes formula
+\begin{fleqn}
+\begin{equation}
+\begin{aligned}
+\text{Let } S_t &\text{ be the price of the stock at time } t,\\
+K &\text{ be the strike price of the option,}\\
+\sigma &\text{ be the volatility of the stock,}\\
+T &\text{ be the time to maturity of the option,}\\
+C_t &\text{ be the price of the call option at time } t.
+\end{aligned}
+\end{equation}
+\end{fleqn}
+the price of the call option at time $t$ is given by the Black and Scholes formula
+\[\boxed{C_t = S_tN(d_1) - KN(d_2)}\]
+where $N(x)$ is the cumulative distribution function of the standard normal distribution
+\subsection{Greeks}
+\begin{itemize}
+\item Delta ; $\Delta = \der{C}{S}=N(d_1)$
+\item Gamma ; $\Gamma = \der{^2C}{S^2}=\frac{N'(d_1)}{S\sigma\sqrt{T}}$
+\end{itemize}
+Applying Taylor expansion to the Black and Scholes formula, we get
+\begin{equation}
+\begin{aligned}
+C_t(S_2) -C_t(S_1) &= \Delta_{S_1}(S_2-S_1) + \frac{1}{2}\Gamma_{S_1}(S_2-S_1)^2 + \cdots
+\end{aligned}
+\end{equation}
+if t has changed we need to add the theta
+\begin{equation}
+\begin{aligned}
+C_{t_2}(S_2) -C_{t_1}(S_1) &= + \theta_{S_1,t_1}(t_2-t_1) +\Delta_{S_1}(S_2-S_1) + \frac{1}{2}\Gamma_{S_1}(S_2-S_1)^2 + \cdots
+\end{aligned}
+\end{equation}
+
+\newpage
+\subsection{Example}
+Assume that $S_1=100$, $K=100$ $T=30$, and $v=20\%$
+\\the price of the call option at $S_1$ is given by
+\[C_1 = 100N(d_1) - 100N(d_2)=2.7524\]
+\\s=100, k=100, t=30, v=0.2
+\\Call Price: 2.7524, delta=0.5138,gamma=0.0578, theta=11.5556, vega=13.76
+\\ Assume you bought 100 calls.
+\begin{itemize}
+    \item Premium spent = $100\times 2.7524 = 275.24$
+    \item Delta = $100\times 0.5138 = 51.38$ shares
+    \item Gamma = $100\times 0.0578 = 5.78$
+\end{itemize}
+\subsubsection*{Small change in stock price}
+Now assume that the stock price increases to $S_2=101$
+\\s=101, k=100, t=30, v=0.2
+\\Call Price: 3.2949, delta=0.5709,gamma=0.0563, theta=11.4931, vega=13.68
+\begin{itemize}
+    \item Premium = $100\times 3.2949 = 329.49$
+    \item Delta = $100\times 0.5709 = 57.09$ shares
+    \item Gamma = $100\times 0.0563 = 5.63$
+\end{itemize}
+so if you bougt the 100 calls at 2.7524, you spent \$275.24.
+\\If the stock price increases to 101, the value of the calls increases to 3.2949. so you can sell your 100 calls for \$329.49
+\\The profit is \$329.49 - \$275.24 = \$54.25
+\\using Taylor expansion, we can approximate the profit as
+\begin{equation}
+\begin{aligned}
+C_2 - C_1 &= \Delta_{S_1}(S_2-S_1) + \frac{1}{2}\Gamma_{S_1}(S_2-S_1)^2\\
+&= 51.38(101-100) + \frac{1}{2}\times 5.78(101-100)^2\\
+&= 51.38 + 2.89 = 54.27
+\end{aligned}
+\end{equation}
+if you have delta hedged the calls, you sold 51.38 shares of the stock at 100. Now those shares are worth 101, so you lost
+\[ 51.38\times(101-100) = 51.38\]
+your total position is
+\begin{itemize}
+    \item 100 calls bougt at 2.7524, now worth 3.2949, hence a profit of 54.25
+    \item 51.38 shares sold at 100, now worth 101, hence a loss of 51.38
+    \item total profit = 54.25 - 51.38 = 2.87
+\end{itemize}
+
+The profit from the hedged position is :
+\[54.25 - 51.38 = 2.87\]
+which is very close to the expected profit from the gamma
+\[ \frac{1}{2}\Gamma_{S_1}(S_2-S_1)^2 =\frac{1}{2}\times 5.78\times(101-100)^2 = 2.89\]
+\\ It also worth noticing that
+\begin{itemize}
+\item the initial delta was 51.38 shares,
+\item the final delta was 57.09 shares.
+\item delta change = final delta - initial delta = 57.09 - 51.38 = 5.71
+\item final delta-initial delta :$\Delta_{S_2}-\Delta_{S_1}\sim \Gamma_{S_1}\times(S_2-S_1)$ 
+\item $\Gamma_{S_1}\times(S_2-S_1)=5.78\times(101-100)=5.78 $
+\end{itemize}
+Since the delta keeps changing, the delta hedging can not be perfect. The delta hedging is only accurate for small changes in the stock price.
+\subsubsection*{Time Decay}
+However, the price of the option decreases as time passes. The rate of decrease is given by the theta
+\[\theta = \der{C}{t} = -\frac{S_tN'(d_1)\sigma}{2\sqrt{T}}\]
+In this formula T is in years, so if t=30, then T=30/252.
+Here the theta is 11.5556, so the value of each option decreases by $11.56\times\frac{1}{252}=0.0459$ per day.
+\\since you have 100 options, the value of your options decreases by $0.0459\times 100 = 4.59$ per day.
+so your net profit is $2.87 - 4.59 = -1.72$
+\\The stock price did not change enough to cover the time decay.
+\\Remeber that our implied volatility is 20\%, so we expect daily moves of $\frac{0.2}{\sqrt{252}}\times 100 = 1.26$. So we will only make money if the spots moves more than \$1.26 
+\subsubsection*{Large change in stock price}
+suppose now that the stock price increases to 110
+\\s=110, k=100, t=30, v=0.2
+\\Call Price: 10.2765, delta=0.9216,gamma=0.0193, theta=4.69, vega=5.56
+\begin{itemize}
+    \item Premium = $100\times 10.2765 = 1027.65$
+    \item Delta = $100\times 0.9216 = 92.16$ shares
+    \item Gamma = $100\times 0.0193 = 1.93$
+\end{itemize}
+If the stock price increases to 110, the value of the calls increases to 10.2765. so you can sell the calls for \$1,027.65
+\\The profit is \$1,027.65 - \$275.24 = \$752.41
+if you have delta hedged the calls, you sold 51.38 shares of the stock at 100. Now those shares are worth 110, so you lost
+\[ 51.38\times(110-100) = 513.8\]
+your total position is
+\begin{itemize}
+    \item 100 calls bougt at 2.7524, now worth 10.2765, hence a profit of 752.41
+    \item 51.38 shares sold at 100, now worth 110, hence a loss of 513.8
+    \item total profit = 752.41 - 513.8 = 238.61
+\end{itemize}
+
+The profit from the calls is 752.41, so the total profit is
+\[752.41 - 513.8 = 238.61\]
+
+The time decay is still 4.69$0.0459\times 100 = 4.59$ per day, so the total profit is
+\[238.61 - 4.69 = 233.92\]
+The stock price increased enough to cover the time decay.
+\\again the profit can be approximated by the gamma
+\begin{equation}
+\begin{aligned}
+C_2 - C_1 &= \theta +\frac{1}{2}\Gamma(S_1)(S_2-S_1)^2\\
+&= -4.59+ \frac{1}{2}\times 5.78(110-100)^2\\ 
+&= -4.59+ \frac12 \times 578 = 284.41
+\end{aligned}
+\end{equation}
+Here the Taylor expansion is not as accurate because the stock price increased by 10, which is a large change. The gamma is only an approximation, and it is only accurate for small changes in the stock price.
+\\remember that our break-even point is 1.26, so we will only make money if the stock price moves more than 1.26. Here the move is 10/1.26=7.93, so we made money.
+\\More specifically, our gamma PnL is roughly $(7.93)^2\times \theta=62.88\times 4.59=288$ 
+\section*{Useful facts}
+\begin{itemize}
+\item the price of the call can never be greater than the stock price
+\item the price of the put can never be greater than the strike price
+\item a good approximation for the delta is the probability that the option will be in the money at expiration
+\item a good approximation for the atm call is
+\[C=0.4S\sigma\sqrt{T} \text{ with T in years}\]
+\item in particular if $T_2=4\times T_1$ then $C_2=2\times C_1$
+\item a good approximation for the vega of the atm call is
+\[C=0.4S\sqrt{T} \text{ with T in years}\]
+\item So both the price and the vega of the atm call are proportional to the square root of the time to maturity
+\item Call-Put parity: $C-P=S-K$
+\end{itemize}
+
+\subsection*{Put-Call Parity}
+suppose you have a call option with a strike price of K and a put option with a strike price of K. The call option is worth $C$ and the put option is worth $P$. The stock price is $S$.
+suppose you buy the call and sell the put. The payoff is
+\begin{itemize}
+\item if the stock price is greater than K, the call is worth $S-K$ and the put is worth 0, so the payoff is $S-K$
+\item if the stock price is less than K, the call is worth 0 and the put is worth $K-S$, so the payoff is $S-K$
+\item so the payoff is always $S-K$ not matter what the stock price is
+\item hence
+\[C-P=S-K\]
+\item the call and the put have different deltas but the same gamma, same theta, and same vega
+\end{itemize}
+
+
+\end{document}
