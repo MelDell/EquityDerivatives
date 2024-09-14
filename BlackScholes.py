@@ -196,17 +196,6 @@ if __name__ == '__main__':
     v=0.2
     Price(s, k, t, v)
 
-    s=101
-    k=100
-    t=30
-    v=0.2
-    Price(s, k, t, v)
-
-    s=110
-    k=100
-    t=30
-    v=0.2
-    Price(s, k, t, v)
     
     s_1=100 ; s_2=101.26
     k=100
