@@ -46,7 +46,7 @@ C_t(S_2) -C_t(S_1) &= \Delta_{S_1}(S_2-S_1) + \frac{1}{2}\Gamma_{S_1}(S_2-S_1)^2
 if t has changed we need to add the theta
 \begin{equation}
 \begin{aligned}
-C_{t_2}(S_2) -C_{t_1}(S_1) &= + \theta_{S_1,t_1}(t_2-t_1) +\Delta_{S_1}(S_2-S_1) + \frac{1}{2}\Gamma_{S_1}(S_2-S_1)^2 + \cdots
+C_{t_2}(S_2) -C_{t_1}(S_1) &=  \theta_{S_1,t_1}(t_2-t_1) +\Delta_{S_1}(S_2-S_1) + \frac{1}{2}\Gamma_{S_1}(S_2-S_1)^2 + \cdots
 \end{aligned}
 \end{equation}
 
@@ -176,6 +176,33 @@ suppose you buy the call and sell the put. The payoff is
 \[C-P=S-K\]
 \item the call and the put have different deltas but the same gamma, same theta, and same vega
 \end{itemize}
-
+\newpage
+\section[Bonds]
+Key Rule :\textbf{The value of an asset is the present value of its expected cash flows}
+    \subsection{bond}
+    a bond is an asset that pays an annual coupon and 100 at maturity
+    \subsubsection{Bond price:example !} Let's consider a 1 years bond with a 10\% coupon. the cash flows will be:
+    \begin{itemize}
+        \item \$10 in 1 year (coupon)
+        \item \$100 in 1 year (principal)
+    \end{itemize}
+    \[\text{Bond Price}=\frac{100+10}{1+y} \quad \text{where y is the yield}\]
+    hence
+    \[y=\frac{100+10}{\text{Bond Price}}-1\]
+    so if the bond price is 90 and the coupon 10, the yield is
+    \[y=\frac{100+10}{90}-1=1.2222-1=0.2222=22.22\%\]
+    \subsubsection{Bond Price: Example 2}
+    Let's now consider a 2 year bon with a coupon C. The cash flow will be:
+    \begin{itemize}
+        \item C in 1 year time (1st coupon0
+        \item C in 2 year time (2nd coupon)
+        \item 100 in 2 years time (principal)
+    \end{itemize}
+    \[\text{Bond Price}=\frac{C}{(1+y)}+\frac{100+C}{(1+y)^2} \quad \text{where y is the yield}\]
+    I think the way to solve it is to set $u=1+y$, multiply the equation above by $u^2$, then solve the quadratic equation
+    \[u^2\text{Bond Price}-uC-(C+100)=0\]
+    \[u=\frac{C+\sqrt{C^2+4\text{Bond Price}(C+100)}}{2\text{Bond Price}}\]
+    \[y=u-1=\frac{C+\sqrt{C^2+4\text{Bond Price}(C+100)}}{2\text{Bond Price}}-1\]
+    \\the other solution of the quadratic equation is negative, so we discard it
 
 \end{document}
